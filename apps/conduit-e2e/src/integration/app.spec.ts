@@ -1,6 +1,10 @@
 import {
   getLandingPageBannerContent,
   getLandingPageBannerName,
+  getPasswordInput,
+  getRegisterLink,
+  getUserNameInput,
+  getEmailInput
 } from '../support/app.po';
 
 describe('conduit', () => {
@@ -12,6 +16,29 @@ describe('conduit', () => {
     getLandingPageBannerContent().contains('A place to share your knowledge.');
   });
 
-  it('should support sign up');
-  it('should support sign in');
+  describe('given: user creds exist and r valid', () => {
+    const signup = () => {
+      const username = 'username' + Math.random();
+      const email = 'email' + Math.random();
+      const password = 'pw' + Math.random();
+      getRegisterLink().click();
+      getUserNameInput().type(username);
+      getEmailInput().type(email);
+      getPasswordInput().type(password);
+
+      return {username, email, password};
+    };
+
+    it('should support sign up', () => {
+      signup();
+    });
+
+    describe('signing in', () => {
+      it('should support sign in', () => {
+        const { username, password } = signup();
+        getEmailInput().type(username)
+        getPasswordInput().type(password);
+      });
+    })
+  });
 });
