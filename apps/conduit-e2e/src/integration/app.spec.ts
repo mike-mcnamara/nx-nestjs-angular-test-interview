@@ -4,7 +4,12 @@ import {
   getPasswordInput,
   getRegisterLink,
   getUserNameInput,
-  getEmailInput
+  getEmailInput,
+  getTypeSubmit,
+  getSettingsLink,
+  getSignoutButton,
+  getConfirmationButton,
+  getSigninLink
 } from '../support/app.po';
 
 describe('conduit', () => {
@@ -17,27 +22,46 @@ describe('conduit', () => {
   });
 
   describe('given: user creds exist and r valid', () => {
+    const signout = () => {
+      getSettingsLink().click();
+      getSignoutButton().click();
+    };
+
     const signup = () => {
-      const username = 'username' + Math.random();
-      const email = 'email' + Math.random();
-      const password = 'pw' + Math.random();
+      const rando = (postfix: string) => `${Math.round(Math.random() * 100000)}-${postfix}`;
+
+      const username = rando('username');
+      const email = rando('user@email.com');
+      const password = rando('password');
+
       getRegisterLink().click();
       getUserNameInput().type(username);
       getEmailInput().type(email);
       getPasswordInput().type(password);
 
-      return {username, email, password};
+      getTypeSubmit().click();
+      getConfirmationButton().click();
+
+      return { username, email, password };
     };
 
-    it('should support sign up', () => {
-      signup();
+    afterEach(signout);
+
+    describe('signing up', () => {
+      it('should support sign up', () => {
+        signup();
+      });
     });
 
     describe('signing in', () => {
       it('should support sign in', () => {
-        const { username, password } = signup();
-        getEmailInput().type(username)
+        const { email, password } = signup();
+        signout();
+        getSigninLink().click();
+        getEmailInput().type(email)
         getPasswordInput().type(password);
+        getTypeSubmit().click();
+        getConfirmationButton().click();
       });
     })
   });
