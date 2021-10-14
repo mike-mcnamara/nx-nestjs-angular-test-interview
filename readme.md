@@ -28,6 +28,10 @@ This codebase was created to demonstrate a fully fledged fullstack application b
 
 `npm run migration:run`
 
+**Load data:**
+
+`docker exec -i nx-nestjs-angular-test-interview_db_1 sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" realworld_db' < realworld-dump-data-exported.sql`
+
 **Start both server (api) and client (conduit) apps:**
 
 `npm run serve:api-conduit`
